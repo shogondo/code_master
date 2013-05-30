@@ -31,6 +31,20 @@ class Master3
   end
 end
 
+class Master4
+  include CodeMaster
+
+  def initialize(code = nil)
+    @code = code
+  end
+
+  behave_code_master :code, [:code1, :code2, :code3]
+
+  def code()
+    return @code
+  end
+end
+
 class Model1
   include CodeMaster
 
@@ -58,6 +72,16 @@ class Model3
 
   def master1()
     return Master1.new
+  end
+end
+
+class Model4
+  include CodeMaster
+
+  import_code_master :masters => Master4
+
+  def masters()
+    return [Master4.new(:code1), Master4.new(:code2)]
   end
 end
 
@@ -116,6 +140,13 @@ describe CodeMaster do
       subject(:model) { Model3.new }
       it { expect(model.respond_to?(:admin?)).to be_false }
       it { expect(model.respond_to?(:user?)).to be_false }
+    end
+
+    context "when specified property is enumerable" do
+      subject(:model) { Model4.new }
+      it { expect(model.code1?).to be_true }
+      it { expect(model.code2?).to be_true }
+      it { expect(model.code3?).to be_false }
     end
   end
 end

@@ -30,7 +30,16 @@ module CodeMaster
           type.new.master_codes.each do |code|
             define_method "#{code}?" do
               master = self.respond_to?(property) ? self.send(property) : nil
-              return master.nil? ? false : master.send("#{code}?")
+              if master.nil?
+                return false
+              elsif master.is_a? Enumerable
+                master.each do |o|
+                  return true if o.send("#{code}?")
+                end
+                return false
+              else
+                return master.send("#{code}?")
+              end
             end
           end
         end
