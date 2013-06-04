@@ -32,8 +32,8 @@ module CodeMaster
 
     def import_code_master(args = {})
       args.each do |property, type|
-        if type.method_defined?(:master_codes)
-          type.new.master_codes.each do |code|
+        if type.respond_to?(:master_codes)
+          type.master_codes.each do |code|
             define_method "#{code}?" do
               master = self.respond_to?(property) ? self.send(property) : nil
               if master.nil?
