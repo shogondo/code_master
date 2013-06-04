@@ -22,6 +22,12 @@ module CodeMaster
           return code.nil? ? false : code.to_s == o.to_s
         end
       end
+
+      (class << self; self end).class_eval do
+        define_method "master_codes" do
+          return values
+        end
+      end
     end
 
     def import_code_master(args = {})

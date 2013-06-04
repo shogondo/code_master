@@ -87,6 +87,10 @@ end
 
 describe CodeMaster do
   describe ".behave_code_master" do
+    describe ".codes" do
+      it { expect(Master1.master_codes).to eq [:admin, :user] }
+    end
+
     describe "#master_code?" do
       subject(:model) { Master1.new }
       it { expect(model.master_code?("admin")).to be_true }
